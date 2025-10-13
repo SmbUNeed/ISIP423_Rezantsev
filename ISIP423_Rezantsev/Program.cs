@@ -241,7 +241,7 @@ namespace Prac5
         }
     }
 
-    //Основной класс системы управления университетомjfgkh,sdgblhksjdgbkjsfdbglkjhsfdglkjsdfbkgjhsdkljh;ioafasn;og
+    //Основной класс системы управления университетомF
     public class UniversityManager
     {
         private List<Student> students;
