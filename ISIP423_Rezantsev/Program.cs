@@ -34,11 +34,11 @@ public class Book
 
     public override string ToString()
     {
-        return $"ID: {Id}, Название: \"{Title}\", Автор: {Author}, Жанр: {Genre}, Год: {Year}, Цена: {Price:C}";
+        return $"ID: {Id}, Название: \"{Title}\", Автор: {Author}, Жанр: {Genre}, Год: {Year}, Цена: {Price}";
     }
 }
 
-public class Library //FFff
+public class Library
 {
     private List<Book> _books = new List<Book>();
 
