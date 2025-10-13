@@ -241,7 +241,7 @@ namespace Prac5
         }
     }
 
-    // Основной класс системы управления университетом
+    //Основной класс системы управления университетом
     public class UniversityManager
     {
         private List<Student> students;
