@@ -108,7 +108,7 @@ namespace Prac5
         }
     }
 
-    // Класс Teacher (Наследование)
+    // Класс Teacher ( Наследование )
     public class Teacher : Person
     {
         private static int nextId = 1;
