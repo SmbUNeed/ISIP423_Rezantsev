@@ -115,7 +115,7 @@ public class Library //FFff
     }
 }
 
-class Program
+class Program // БААААЗАААА
 {
     private static Library _library = new Library();
 
