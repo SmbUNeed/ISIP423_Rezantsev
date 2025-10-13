@@ -105,7 +105,7 @@ public class Library //FFff
                     .ToDictionary(g => g.Key, g => g.Count());
     }
 
-    public void InitializeTestData()
+    public void InitializeTestData() // Начальные данные
     {
         AddBook(new Book("Убийство в «Восточном экспрессе»", "Агата Кристи", Genre.Thriller, 1934, 320));
         AddBook(new Book("Мастер и Маргарита", "Михаил Булгаков", Genre.Romance, 1967, 480));
