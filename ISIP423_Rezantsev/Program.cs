@@ -197,6 +197,7 @@ namespace Prac5
             Teacher = null;
         }
 
+        // Добавляем студента
         public void AddStudent(Student student)
         {
             if (student != null && !students.Contains(student))
