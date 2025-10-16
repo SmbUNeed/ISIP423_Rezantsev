@@ -1,3 +1,10 @@
-﻿
-// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿namespace ISIP423_Rezantsev
+{
+    internal class Program
+    {
+        public void Main(string[] args)
+        {
+            
+        }
+    }
+}
