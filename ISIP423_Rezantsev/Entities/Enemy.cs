@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ISIP423_Rezantsev.Entities
+﻿namespace RoguelikeGame.Entities
 {
-    internal class Enemy
+    public abstract class Enemy
     {
-        public double Hp;
-        public double Armor;
-        public double Damage;
+        public string Name { get; protected set; }
+        public int MaxHP { get; protected set; }
+        public int CurrentHP { get; set; }
+        public int Attack { get; protected set; }
+        public int Defense { get; protected set; }
+
+        public abstract void SpecialAbility(Player player);
+        public abstract string GetDescription();
     }
 }

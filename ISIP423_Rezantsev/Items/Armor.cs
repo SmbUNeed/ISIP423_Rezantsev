@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using RoguelikeGame.Entities;
 
-namespace ISIP423_Rezantsev.Items
+namespace RoguelikeGame.Items
 {
-    internal class Armor : Item
+    public class Armor : Item
     {
-        public double Protection;
+        public int Defense { get; private set; }
+        public int Value { get; private set; }
 
-        public Armor(string name, int durability, double protection) : base(durability, name)
+        public Armor(string name, int defense, int value)
         {
             Name = name;
-
-            Durability = durability;
-            Protection = protection;
+            Defense = defense;
+            Value = value;
         }
+
+        public override void Use(Player player)
+        {
+            player.EquippedArmor = this;
+        }
+
+        public override string ToString() => $"{Name} (Защита: {Defense})";
     }
 }

@@ -1,10 +1,14 @@
-﻿namespace ISIP423_Rezantsev
+﻿using ISIP423_Rezantsev.Game;
+using System;
+
+namespace RoguelikeGame
 {
-    internal class Program
+    class Program
     {
-        public void Main(string[] args)
+        static void Main(string[] args)
         {
-            
+            GameManager game = new GameManager();
+            game.StartGame();
         }
     }
 }

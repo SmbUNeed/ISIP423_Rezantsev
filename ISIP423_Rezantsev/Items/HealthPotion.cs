@@ -1,28 +1,18 @@
-﻿using ISIP423_Rezantsev.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RoguelikeGame.Entities;
 
-namespace ISIP423_Rezantsev.Items
+namespace RoguelikeGame.Items
 {
-    internal class HealthPotion
+    public class HealthPotion : Item
     {
-        public PotionType Type;
-
-        public HealthPotion(PotionType potionType)
+        public HealthPotion()
         {
-            Type = potionType;
+            Name = "Лечебное зелье";
         }
-        
-        public enum PotionType
+
+        public override void Use(Player player)
         {
-            Tiny = 1,
-            Small = 3,
-            Middle = 5,
-            Big = 7,
-            Great = 10
+            player.Heal();
+            Console.WriteLine("Вы выпили зелье и полностью восстановили здоровье!");
         }
     }
 }

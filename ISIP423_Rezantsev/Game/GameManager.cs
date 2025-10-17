@@ -8,5 +8,6 @@ namespace ISIP423_Rezantsev.Game
 {
     internal class GameManager
     {
+
     }
 }
