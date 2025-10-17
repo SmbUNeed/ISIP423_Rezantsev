@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace RoguelikeGame.Entities
+﻿namespace ISIP423_Rezantsev
 {
-    public class Mage : Enemy
+    internal class Mage : Enemy
     {
         private Random random;
         private double freezeChance = 0.25; // 25% шанс заморозки

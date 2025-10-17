@@ -1,8 +1,6 @@
-﻿using ISIP423_Rezantsev.Items;
-
-namespace RoguelikeGame.Entities
+﻿namespace ISIP423_Rezantsev
 {
-    public class Player
+    internal class Player
     {
         public int MaxHP { get; set; }
         public int CurrentHP { get; set; }

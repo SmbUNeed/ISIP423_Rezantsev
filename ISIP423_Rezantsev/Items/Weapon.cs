@@ -1,8 +1,6 @@
-﻿using RoguelikeGame.Entities;
-
-namespace RoguelikeGame.Items
+﻿namespace ISIP423_Rezantsev
 {
-    public class Weapon : Item
+    internal class Weapon : Item
     {
         public int Attack { get; private set; }
         public int Value { get; private set; }

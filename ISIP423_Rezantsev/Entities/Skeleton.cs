@@ -1,6 +1,6 @@
-﻿namespace RoguelikeGame.Entities
+﻿namespace ISIP423_Rezantsev
 {
-    public class Skeleton : Enemy
+    internal class Skeleton : Enemy
     {
         public Skeleton()
         {

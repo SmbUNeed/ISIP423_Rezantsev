@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace RoguelikeGame.Entities
+﻿namespace ISIP423_Rezantsev
 {
-    public class Goblin : Enemy
+    internal class Goblin : Enemy
     {
         private Random random;
         private double critChance = 0.2; // 20% шанс крита

@@ -1,6 +1,6 @@
-﻿namespace RoguelikeGame.Entities
+﻿namespace ISIP423_Rezantsev
 {
-    public abstract class Enemy
+    internal abstract class Enemy
     {
         public string Name { get; protected set; }
         public int MaxHP { get; protected set; }

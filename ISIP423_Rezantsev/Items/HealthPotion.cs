@@ -1,8 +1,6 @@
-﻿using RoguelikeGame.Entities;
-
-namespace RoguelikeGame.Items
+﻿namespace ISIP423_Rezantsev
 {
-    public class HealthPotion : Item
+    internal class HealthPotion : Item
     {
         public HealthPotion()
         {

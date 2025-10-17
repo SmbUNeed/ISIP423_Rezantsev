@@ -1,7 +1,4 @@
-﻿using ISIP423_Rezantsev.Game;
-using System;
-
-namespace RoguelikeGame
+﻿namespace ISIP423_Rezantsev
 {
     class Program
     {
