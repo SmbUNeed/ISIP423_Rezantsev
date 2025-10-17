@@ -1,4 +1,4 @@
-﻿namespace ISIP423_Rezantsev
+﻿namespace ISIP423_Rezantsev.Entities.Enemies
 {
     internal class Skeleton : Enemy
     {
@@ -14,7 +14,6 @@
         public override void SpecialAbility(Player player)
         {
             Console.WriteLine("Скелет игнорирует защиту игрока!");
-            // Игнор защиты обрабатывается в CombatManager
         }
 
         public override string GetDescription() =>

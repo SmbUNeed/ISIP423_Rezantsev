@@ -13,7 +13,7 @@
             MaxHP = maxHP;
             CurrentHP = maxHP;
             IsFrozen = false;
-            // Начальная экипировка
+
             EquippedWeapon = new Weapon("Кулаки", 2, 0);
             EquippedArmor = new Armor("Тряпки", 1, 0);
         }

@@ -1,9 +1,9 @@
-﻿namespace ISIP423_Rezantsev
+﻿namespace ISIP423_Rezantsev.Entities.Enemies
 {
     internal class Mage : Enemy
     {
         private Random random;
-        private double freezeChance = 0.25; // 25% шанс заморозки
+        private double freezeChance = 0.25;
 
         public Mage(Random rand)
         {

@@ -4,8 +4,8 @@
     {
         static void Main(string[] args)
         {
-            GameManager game = new GameManager();
-            game.StartGame();
+            //GameManager game = new GameManager();
+            //game.StartGame();
         }
     }
 }

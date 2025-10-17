@@ -1,4 +1,4 @@
-﻿namespace ISIP423_Rezantsev
+﻿namespace ISIP423_Rezantsev.Entities.Enemies
 {
     internal class Goblin : Enemy
     {
@@ -20,7 +20,6 @@
             if (random.NextDouble() < critChance)
             {
                 Console.WriteLine("Гоблин наносит критический удар!");
-                // Логика крита будет в CombatManager
             }
         }
 
