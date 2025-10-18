@@ -1,36 +1,30 @@
-﻿namespace ISIP423_Rezantsev.Entities.Bosses
+﻿namespace ISIP423_Rezantsev
 {
-    internal class PestovCMM : Boss
+    internal class PestovCMM : Skeleton
     {
-        private Random random;
-        private double freezeChance = 0.25 + 0.15;
+        private double freezeChance = 0.3; // 15% + базовый шанс мага
 
-        public PestovCMM(Random rand)
+        public PestovCMM() : base()
         {
-            random = rand;
-            Name = "Пестов С--";
-            InitializeBoss();
-        }
-
-        protected override void InitializeBoss()
-        {
-            MaxHP = (int)(25 * 1.3);
+            Name = "Пестов С-- (Босс Скелет-Маг)";
+            MaxHP = (int)(MaxHP * 1.3);
             CurrentHP = MaxHP;
-            Attack = (int)(10 * 1.8);
-            Defense = (int)(2 * 0.6);
+            Attack = (int)(Attack * 1.8);
+            Defense = (int)(Defense * 0.6);
         }
 
-        public override void SpecialAbility(Player player)
+        public override int CalculateDamage(Creature target)
         {
-            Console.WriteLine("ПЕСТОВ ИГНОРИРУЕТ ЗАЩИТУ ИГРОКА!");
+            // Сохраняет игнор защиты скелета
+            return Attack;
+        }
+
+        public override void ApplySpecialEffect(Creature target)
+        {
             if (random.NextDouble() < freezeChance)
             {
-                Console.WriteLine("Пестов замораживает вас! Вы пропустите следующий ход.");
-                player.IsFrozen = true;
+                Console.WriteLine("Пестов С-- использует магию заморозки! Вы пропустите следующий ход.");
             }
         }
-
-        public override string GetDescription() =>
-            $"БОСС Пестов С-- (HP: {CurrentHP}, Атака: {Attack}, Защита: {Defense}, Игнор защиты)";
     }
 }

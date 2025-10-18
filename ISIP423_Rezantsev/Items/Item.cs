@@ -1,8 +1,17 @@
-﻿namespace ISIP423_Rezantsev
+﻿using System;
+using System.Collections.Generic;
+
+namespace ISIP423_Rezantsev
 {
     internal abstract class Item
     {
         public string Name { get; protected set; }
-        public abstract void Use(Player player);
+
+        public Item(string name)
+        {
+            Name = name;
+        }
+
+        public abstract void DisplayStats();
     }
 }

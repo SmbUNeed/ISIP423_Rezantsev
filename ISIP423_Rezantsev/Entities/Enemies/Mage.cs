@@ -1,30 +1,23 @@
-﻿namespace ISIP423_Rezantsev.Entities.Enemies
+﻿namespace ISIP423_Rezantsev
 {
     internal class Mage : Enemy
     {
-        private Random random;
-        private double freezeChance = 0.25;
+        private double freezeChance = 0.15; // 15% шанс заморозки
 
-        public Mage(Random rand)
+        public Mage() : base("Маг", 20, 12, 1) { }
+
+        public override int CalculateDamage(Creature target)
         {
-            random = rand;
-            Name = "Маг";
-            MaxHP = 20;
-            CurrentHP = MaxHP;
-            Attack = 12;
-            Defense = 1;
+            return Attack;
         }
 
-        public override void SpecialAbility(Player player)
+        public override void ApplySpecialEffect(Creature target)
         {
             if (random.NextDouble() < freezeChance)
             {
                 Console.WriteLine("Маг замораживает вас! Вы пропустите следующий ход.");
-                player.IsFrozen = true;
+                // Эффект заморозки будет обработан в классе игры
             }
         }
-
-        public override string GetDescription() =>
-            $"Маг (HP: {CurrentHP}, Атака: {Attack}, Защита: {Defense}, Шанс заморозки: {freezeChance * 100}%)";
     }
 }

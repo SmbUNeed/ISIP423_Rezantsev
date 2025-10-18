@@ -3,20 +3,15 @@
     internal class Weapon : Item
     {
         public int Attack { get; private set; }
-        public int Value { get; private set; }
 
-        public Weapon(string name, int attack, int value)
+        public Weapon(string name, int attack) : base(name)
         {
-            Name = name;
             Attack = attack;
-            Value = value;
         }
 
-        public override void Use(Player player)
+        public override void DisplayStats()
         {
-            player.EquippedWeapon = this;
+            Console.WriteLine($"Оружие: {Name} (Атака: {Attack})");
         }
-
-        public override string ToString() => $"{Name} (Атака: {Attack})";
     }
 }

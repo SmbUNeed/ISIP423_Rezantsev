@@ -1,35 +1,22 @@
-﻿namespace ISIP423_Rezantsev.Entities.Bosses
+﻿namespace ISIP423_Rezantsev
 {
-    internal class ArchimageCPP : Boss
+    internal class ArchmageCPP : Mage
     {
-        private Random random;
-        private double freezeChance = 0.25 + 0.10;
-
-        public ArchimageCPP(Random rand)
+        public ArchmageCPP() : base()
         {
-            random = rand;
-            Name = "Архимаг С++";
-            InitializeBoss();
-        }
-
-        protected override void InitializeBoss()
-        {
-            MaxHP = (int)(20 * 1.8);
+            Name = "Архимаг C++ (Босс Маг)";
+            MaxHP = (int)(MaxHP * 1.8);
             CurrentHP = MaxHP;
-            Attack = (int)(12 * 1.6);
-            Defense = (int)(1 * 1.1);
+            Attack = (int)(Attack * 1.6);
+            Defense = (int)(Defense * 1.1);
         }
 
-        public override void SpecialAbility(Player player)
+        public override void ApplySpecialEffect(Creature target)
         {
-            if (random.NextDouble() < freezeChance)
+            if (random.NextDouble() < 0.25) // +10% к базовому шансу мага
             {
-                Console.WriteLine("Архимаг замораживает вас! Вы пропустите следующий ход.");
-                player.IsFrozen = true;
+                Console.WriteLine("Архимаг C++ накладывает мощную заморозку! Вы пропустите следующий ход.");
             }
         }
-
-        public override string GetDescription() =>
-            $"БОСС Архимаг С++ (HP: {CurrentHP}, Атака: {Attack}, Защита: {Defense}, Шанс заморозки: {freezeChance})";
     }
 }

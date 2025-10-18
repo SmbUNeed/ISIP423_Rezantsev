@@ -1,22 +1,11 @@
-﻿namespace ISIP423_Rezantsev.Entities.Enemies
+﻿namespace ISIP423_Rezantsev
 {
     internal class Skeleton : Enemy
     {
-        public Skeleton()
-        {
-            Name = "Скелет";
-            MaxHP = 25;
-            CurrentHP = MaxHP;
-            Attack = 10;
-            Defense = 2;
-        }
+        public Skeleton() : base("Скелет", 25, 10, 2) { }
 
-        public override void SpecialAbility(Player player)
-        {
-            Console.WriteLine("Скелет игнорирует защиту игрока!");
-        }
+        public override int CalculateDamage(Creature target) => Attack;
 
-        public override string GetDescription() =>
-            $"Скелет (HP: {CurrentHP}, Атака: {Attack}, Защита: {Defense}, Игнор защиты)";
+        public override void ApplySpecialEffect(Creature target) { }
     }
 }

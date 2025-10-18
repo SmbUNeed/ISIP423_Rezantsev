@@ -4,8 +4,11 @@
     {
         static void Main(string[] args)
         {
-            //GameManager game = new GameManager();
-            //game.StartGame();
+            Game game = new Game();
+            game.StartGame();
+
+            Console.WriteLine("\nСпасибо за игру!");
+            Console.ReadKey();
         }
     }
 }

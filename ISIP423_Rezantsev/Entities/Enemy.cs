@@ -1,14 +1,12 @@
 ﻿namespace ISIP423_Rezantsev
 {
-    internal abstract class Enemy
+    internal abstract class Enemy : Creature
     {
-        public string Name { get; protected set; }
-        public int MaxHP { get; protected set; }
-        public int CurrentHP { get; set; }
-        public int Attack { get; protected set; }
-        public int Defense { get; protected set; }
+        public Enemy(string name, int maxHP, int attack, int defense) : base(name, maxHP, attack, defense) { }
 
-        public abstract void SpecialAbility(Player player);
-        public abstract string GetDescription();
+        public override int CalculateDamage(Creature target)
+        {
+            return Attack;
+        }
     }
 }

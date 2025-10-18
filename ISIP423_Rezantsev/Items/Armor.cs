@@ -3,20 +3,15 @@
     internal class Armor : Item
     {
         public int Defense { get; private set; }
-        public int Value { get; private set; }
 
-        public Armor(string name, int defense, int value)
+        public Armor(string name, int defense) : base(name)
         {
-            Name = name;
             Defense = defense;
-            Value = value;
         }
 
-        public override void Use(Player player)
+        public override void DisplayStats()
         {
-            player.EquippedArmor = this;
+            Console.WriteLine($"Доспехи: {Name} (Защита: {Defense})");
         }
-
-        public override string ToString() => $"{Name} (Защита: {Defense})";
     }
 }

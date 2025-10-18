@@ -1,34 +1,25 @@
-﻿namespace ISIP423_Rezantsev.Entities.Bosses
+﻿namespace ISIP423_Rezantsev
 {
-    internal class VVG : Boss
+    internal class VVG : Goblin
     {
-        private Random random;
-        private double critChance = 0.3;
-
-        public VVG(Random rand)
+        public VVG() : base()
         {
-            random = rand;
-            Name = "ВВГ";
-            InitializeBoss();
-        }
-
-        protected override void InitializeBoss()
-        {
-            MaxHP = 30 * 2;
+            Name = "ВВГ (Босс Гоблин)";
+            MaxHP = (int)(MaxHP * 2.0);
             CurrentHP = MaxHP;
-            Attack = (int)(8 * 1.5);
-            Defense = (int)(3 * 1.2);
+            Attack = (int)(Attack * 1.5);
+            Defense = (int)(Defense * 1.2);
         }
 
-        public override void SpecialAbility(Player player)
+        public override int CalculateDamage(Creature target)
         {
-            if (random.NextDouble() < critChance)
+            int damage = Attack;
+            if (random.NextDouble() < 0.3) // +10% к базовому шансу гоблина
             {
-                Console.WriteLine("ВВГ наносит СМЕРТЕЛЬНЫЙ критический удар!");
+                damage = (int)(damage * 1.5);
+                Console.WriteLine("ВВГ наносит сокрушительный критический удар!");
             }
+            return damage;
         }
-
-        public override string GetDescription() =>
-            $"БОСС ВВГ (HP: {CurrentHP}, Атака: {Attack}, Защита: {Defense}, Шанс крита: {critChance * 100}%)";
     }
 }
