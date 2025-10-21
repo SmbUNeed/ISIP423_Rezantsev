@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ISIP423_Rezantsev.Tables;
+namespace ISIP423_Rezantsev;
 
 public partial class CustomerHistory
 {

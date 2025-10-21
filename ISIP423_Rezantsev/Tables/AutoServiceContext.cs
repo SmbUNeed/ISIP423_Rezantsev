@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ISIP423_Rezantsev.Tables;
 using Microsoft.EntityFrameworkCore;
 
 namespace ISIP423_Rezantsev;
@@ -9,7 +8,6 @@ public partial class AutoServiceContext : DbContext
 {
     public AutoServiceContext()
     {
-
     }
 
     public AutoServiceContext(DbContextOptions<AutoServiceContext> options)
@@ -27,7 +25,7 @@ public partial class AutoServiceContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source = Localhost; Initial Catalog = AutoService; Integrated Security = True; Trust Server Certificate = True");
+        => optionsBuilder.UseSqlServer("Data Source=Localhost;Initial Catalog=AutoService;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,9 +35,7 @@ public partial class AutoServiceContext : DbContext
 
             entity.ToTable("Customer_history");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Day).HasColumnName("day");
             entity.Property(e => e.Earnings)
                 .HasColumnType("decimal(8, 2)")
@@ -65,9 +61,7 @@ public partial class AutoServiceContext : DbContext
 
             entity.HasIndex(e => e.Name, "UQ__parts__72E12F1BBF68F8C3").IsUnique();
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -86,9 +80,7 @@ public partial class AutoServiceContext : DbContext
 
             entity.ToTable("Purchase_orders");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Cost)
                 .HasColumnType("decimal(8, 2)")
                 .HasColumnName("cost");
