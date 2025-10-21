@@ -13,9 +13,9 @@ public partial class Part
 
     public decimal RepairFee { get; set; }
 
+    public int Quantity { get; set; }
+
     public virtual ICollection<CustomerHistory> CustomerHistories { get; set; } = new List<CustomerHistory>();
 
     public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
-
-    public virtual Storage? Storage { get; set; }
 }

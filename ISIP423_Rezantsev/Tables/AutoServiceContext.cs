@@ -21,11 +21,9 @@ public partial class AutoServiceContext : DbContext
 
     public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
 
-    public virtual DbSet<Storage> Storages { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=Localhost;Initial Catalog=AutoService;Integrated Security=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=LocalHost;Initial Catalog=AutoService;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -69,6 +67,7 @@ public partial class AutoServiceContext : DbContext
             entity.Property(e => e.Price)
                 .HasColumnType("decimal(8, 2)")
                 .HasColumnName("price");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.RepairFee)
                 .HasColumnType("decimal(8, 2)")
                 .HasColumnName("repair_fee");
@@ -98,23 +97,6 @@ public partial class AutoServiceContext : DbContext
                 .HasForeignKey(d => d.PartId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__purchase___part___4F7CD00D");
-        });
-
-        modelBuilder.Entity<Storage>(entity =>
-        {
-            entity.HasKey(e => e.PartId).HasName("PK__Storage__A0E3FAB8277FD002");
-
-            entity.ToTable("Storage");
-
-            entity.Property(e => e.PartId)
-                .ValueGeneratedNever()
-                .HasColumnName("part_id");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-
-            entity.HasOne(d => d.Part).WithOne(p => p.Storage)
-                .HasForeignKey<Storage>(d => d.PartId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Storage__part_id__59FA5E80");
         });
 
         OnModelCreatingPartial(modelBuilder);
