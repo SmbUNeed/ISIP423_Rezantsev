@@ -8,7 +8,10 @@ namespace Pr7
         static void Main(string[] args)
         {
             Автосервис service = new();
-            service.StartGame();
+
+            Console.WriteLine("Нажмите любую кнопку для начала игры...");
+
+            service.StartNewGame();
         }
     }
 
@@ -16,7 +19,11 @@ namespace Pr7
     {
         private Random random = new Random();
 
+        private int _currentTurn;
+
         private const int FINE = 50000;
+        private const int START_BALANCE = 100000;
+
         private decimal balance;
         private decimal Balance { 
             get => balance; 
@@ -26,20 +33,63 @@ namespace Pr7
                 } }
         private List<Part> _parts = Core.Context.Parts.ToList();
 
-        public void StartGame()
+        private List<Order> _orders = new List<Order>();
+
+        public void StartNewGame()
         {
+            WaitForUser();
+            _currentTurn = 0;
             while (true)
             {
                 Console.WriteLine("У вас новый клиент!");
                 Part part = GetRandomPart();
                 ChooseMenu(part);
             }
+        }
 
+        private void ShowOrderMenu()
+        {
+            Console.WriteLine("МЕНЮ ЗАКАЗА ДЕТАЛЕЙ");
+
+            ShowAllPartsQuantity();
+            while (true)
+            {
+                Console.WriteLine($"Введите ID детали из списка для заказа (0 - Назад)");
+                int.TryParse(Console.ReadLine(), out int ans);
+
+                Part part = _parts.FirstOrDefault(p => p.Id == ans);
+                ans = -1;
+
+                if (part != null)
+                {
+                    Console.WriteLine("Введите необходимое количество:");
+                    int.TryParse(Console.ReadLine(), out ans);
+
+                    decimal orderPrice = ans * part.Price;
+                    Console.WriteLine($"Сумма заказа: {orderPrice} руб.");
+                    if (Balance >= orderPrice)
+                    {
+                        Console.WriteLine("Нажмите 1 для подтверждения");
+                        if (Console.ReadKey().Key == ConsoleKey.D1)
+                        {
+                            Balance -= orderPrice;
+                            _orders.Add(new Order(part, ans));
+                        }
+                        else ShowOrderMenu();
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Неверный ID!");
+                }
+            }
         }
 
         private void LoseGame()
         {
-            Console.WriteLine("Ты никчемный предприниматель");
+            ShowBalance();
+            Console.WriteLine("Вы никчемный предприниматель...");
             throw new Exception("GG");
         }
 
@@ -51,6 +101,7 @@ namespace Pr7
 
         private void ShowAllPartsQuantity()
         {
+            int count = 0;
             foreach (Part part in _parts)
             {
                 ShowPartQuantity(part);
@@ -59,7 +110,7 @@ namespace Pr7
 
         private void ShowPartQuantity(Part part)
         {
-            Console.WriteLine($"{part.Name}: {part.Quantity} шт.");
+            Console.WriteLine($"{part.Id}. {part.Name}: {part.Quantity} шт.");
         }
 
         private void ClaimOrder(Part part)
@@ -74,13 +125,33 @@ namespace Pr7
                         if (part.Quantity > 0) break;
                     }
                     RepairPart(part);
+                    CompensateDamage(part);
+                }
+                else
+                {
+                    Console.WriteLine("На складе нет деталей!");
+                    PayFine();
                 }
             }
+            else
+            {
+                Console.WriteLine("Успешная замена!");
+                RepairPart(part);
+            }
+        }
+
+        private void PayFine()
+        {
+            Console.WriteLine($"Вы оплатили штраф в размере {FINE} руб.");
+            ShowBalance();
         }
 
         public void CompensateDamage(Part part)
         {
-            Balance -= (CalculateReplacing(part) / 2) + (FINE * 2);
+            decimal compensation;
+            compensation = (CalculateReplacing(part) / 2) + (FINE * 2);
+            Console.WriteLine($"Размер компенсации: {compensation}");
+            ShowBalance();
         }
 
         private void RepairPart(Part part)
@@ -88,6 +159,8 @@ namespace Pr7
             if(part.Quantity <= 0) { return; }
             part.Quantity -= 1;
             Balance += CalculateReplacing(part);
+            Console.WriteLine($"Замена детали: {part.Name}");
+            ShowBalance();
         }
 
         private decimal CalculateReplacing(Part part)
@@ -112,20 +185,26 @@ namespace Pr7
         public static void WaitForUser()
         {
             Console.ReadKey();
+            Console.Clear();
         }
 
         private void ChooseMenu(Part part)
         {
             Console.WriteLine($"Деталь: {part.Name}. Стоимость ремонта: {part.Price + part.RepairFee}.");
 
-            Console.WriteLine("1. Все детали:\n2.Принять заказ\n3.Отказаться(Штраф)");
+            Console.WriteLine("0. Заказать деталь\n1. Все детали:\n2.Принять заказ\n3.Отказаться(Штраф)");
 
             bool pick = true;
             while (!pick)
             {
                 pick = false;
-                switch (Console.ReadKey().Key)
+                ConsoleKey key = Console.ReadKey().Key;
+                Console.Clear();
+                switch (key)
                 {
+                    case (ConsoleKey.D0):
+                        ShowOrderMenu();
+                        break;
                     case (ConsoleKey.D1):
                         ShowAllPartsQuantity();
                         break;
