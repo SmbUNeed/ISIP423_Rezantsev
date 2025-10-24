@@ -9,8 +9,6 @@ namespace Pr7
         {
             Автосервис service = new();
 
-            Console.WriteLine("Нажмите любую кнопку для начала игры...");
-
             service.StartNewGame();
         }
     }
@@ -37,14 +35,43 @@ namespace Pr7
 
         public void StartNewGame()
         {
+            Balance = START_BALANCE;
             WaitForUser();
             _currentTurn = 0;
             while (true)
             {
+                _currentTurn++;
+                ManageOrders();
                 Console.WriteLine("У вас новый клиент!");
                 Part part = GetRandomPart();
                 ChooseMenu(part);
+
             }
+        }
+
+        //EEEEEEEEEEEEEEEWWWWWWWWWWWWWWWW
+
+        public void ManageOrders()
+        {
+            List<Order> ordersToRemove = new();
+            foreach (Order order in _orders)
+            {
+                order.TurnsToDelive --;
+                if(order.TurnsToDelive <= 0) ordersToRemove.Add(order);
+            }
+            foreach(Order order in ordersToRemove)
+            {
+                DeliveOrder(order);
+                _orders.Remove(order);
+            }
+        }
+
+        private void DeliveOrder(Order order)
+        {
+            Console.WriteLine($"Заказ №{order.Id} доставлен.");
+            order.Part.Quantity += order.PartQuantity;
+
+            ShowPartQuantity(order.Part);
         }
 
         private void ShowOrderMenu()
@@ -57,6 +84,7 @@ namespace Pr7
                 Console.WriteLine($"Введите ID детали из списка для заказа (0 - Назад)");
                 int.TryParse(Console.ReadLine(), out int ans);
 
+                if (ans == 0) break; 
                 Part part = _parts.FirstOrDefault(p => p.Id == ans);
                 ans = -1;
 
@@ -76,6 +104,12 @@ namespace Pr7
                             _orders.Add(new Order(part, ans));
                         }
                         else ShowOrderMenu();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Недостаточно средств");
+                        ShowBalance();
+                        ShowOrderMenu();
                     }
                 }
                 else
@@ -161,6 +195,7 @@ namespace Pr7
             Balance += CalculateReplacing(part);
             Console.WriteLine($"Замена детали: {part.Name}");
             ShowBalance();
+            WaitForUser();
         }
 
         private decimal CalculateReplacing(Part part)
@@ -184,6 +219,7 @@ namespace Pr7
 
         public static void WaitForUser()
         {
+            Console.WriteLine("Нажмите любую клавишу для продолжения...");
             Console.ReadKey();
             Console.Clear();
         }
@@ -192,21 +228,23 @@ namespace Pr7
         {
             Console.WriteLine($"Деталь: {part.Name}. Стоимость ремонта: {part.Price + part.RepairFee}.");
 
-            Console.WriteLine("0. Заказать деталь\n1. Все детали:\n2.Принять заказ\n3.Отказаться(Штраф)");
+            Console.WriteLine("0. Заказать деталь\n1. Все детали\n2. Принять заказ\n3. Отказаться (Штраф)");
 
-            bool pick = true;
+            bool pick = false;
             while (!pick)
             {
-                pick = false;
+                pick = true;
                 ConsoleKey key = Console.ReadKey().Key;
                 Console.Clear();
                 switch (key)
                 {
                     case (ConsoleKey.D0):
                         ShowOrderMenu();
+                        ChooseMenu(part);
                         break;
                     case (ConsoleKey.D1):
                         ShowAllPartsQuantity();
+                        ChooseMenu(part);
                         break;
                     case (ConsoleKey.D2):
                         ClaimOrder(part);
@@ -215,7 +253,7 @@ namespace Pr7
                         CancelOrder();
                         break;
                     default:
-                        pick = true;
+                        pick = false;
                         break;
                 }
             }

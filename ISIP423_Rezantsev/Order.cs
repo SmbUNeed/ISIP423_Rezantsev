@@ -8,12 +8,16 @@ namespace ISIP423_Rezantsev
 {
     internal class Order
     {
+        private static int LastId = 0;
+
+        public int Id;
         public Part Part;
         public int TurnsToDelive;
         public int PartQuantity;
 
         public Order(Part part, int quantity)
         {
+            Id = LastId++;
             Part = part;
             PartQuantity = quantity;
             TurnsToDelive = 2;
