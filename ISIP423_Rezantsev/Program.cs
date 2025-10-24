@@ -28,7 +28,9 @@ namespace Pr7
             set {
                 balance = value;
                 if (balance < 0) LoseGame(); 
-                } }
+                } 
+        }
+
         private List<Part> _parts = Core.Context.Parts.ToList();
 
         private List<Order> _orders = new List<Order>();
@@ -42,190 +44,15 @@ namespace Pr7
             {
                 _currentTurn++;
                 ManageOrders();
-                Console.WriteLine("У вас новый клиент!");
+                Console.WriteLine($"День {_currentTurn}\nУ вас новый клиент!");
                 Part part = GetRandomPart();
                 ChooseMenu(part);
-
             }
-        }
-
-        //EEEEEEEEEEEEEEEWWWWWWWWWWWWWWWW
-
-        public void ManageOrders()
-        {
-            List<Order> ordersToRemove = new();
-            foreach (Order order in _orders)
-            {
-                order.TurnsToDelive --;
-                if(order.TurnsToDelive <= 0) ordersToRemove.Add(order);
-            }
-            foreach(Order order in ordersToRemove)
-            {
-                DeliveOrder(order);
-                _orders.Remove(order);
-            }
-        }
-
-        private void DeliveOrder(Order order)
-        {
-            Console.WriteLine($"Заказ №{order.Id} доставлен.");
-            order.Part.Quantity += order.PartQuantity;
-
-            ShowPartQuantity(order.Part);
-        }
-
-        private void ShowOrderMenu()
-        {
-            Console.WriteLine("МЕНЮ ЗАКАЗА ДЕТАЛЕЙ");
-
-            ShowAllPartsQuantity();
-            while (true)
-            {
-                Console.WriteLine($"Введите ID детали из списка для заказа (0 - Назад)");
-                int.TryParse(Console.ReadLine(), out int ans);
-
-                if (ans == 0) break; 
-                Part part = _parts.FirstOrDefault(p => p.Id == ans);
-                ans = -1;
-
-                if (part != null)
-                {
-                    Console.WriteLine("Введите необходимое количество:");
-                    int.TryParse(Console.ReadLine(), out ans);
-
-                    decimal orderPrice = ans * part.Price;
-                    Console.WriteLine($"Сумма заказа: {orderPrice} руб.");
-                    if (Balance >= orderPrice)
-                    {
-                        Console.WriteLine("Нажмите 1 для подтверждения");
-                        if (Console.ReadKey().Key == ConsoleKey.D1)
-                        {
-                            Balance -= orderPrice;
-                            _orders.Add(new Order(part, ans));
-                        }
-                        else ShowOrderMenu();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Недостаточно средств");
-                        ShowBalance();
-                        ShowOrderMenu();
-                    }
-                }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine("Неверный ID!");
-                }
-            }
-        }
-
-        private void LoseGame()
-        {
-            ShowBalance();
-            Console.WriteLine("Вы никчемный предприниматель...");
-            throw new Exception("GG");
-        }
-
-        private Part GetRandomPart()
-        {
-            List<Part> parts = Core.Context.Parts.ToList();
-            return parts[random.Next(0, parts.Count)];
-        }
-
-        private void ShowAllPartsQuantity()
-        {
-            int count = 0;
-            foreach (Part part in _parts)
-            {
-                ShowPartQuantity(part);
-            }
-        }
-
-        private void ShowPartQuantity(Part part)
-        {
-            Console.WriteLine($"{part.Id}. {part.Name}: {part.Quantity} шт.");
-        }
-
-        private void ClaimOrder(Part part)
-        {
-            if(part.Quantity <= 0)
-            {
-                if(_parts.First(q => q.Quantity > 0) != null)
-                {
-                    while (true)
-                    {
-                        part = _parts[random.Next(0, _parts.Count)];
-                        if (part.Quantity > 0) break;
-                    }
-                    RepairPart(part);
-                    CompensateDamage(part);
-                }
-                else
-                {
-                    Console.WriteLine("На складе нет деталей!");
-                    PayFine();
-                }
-            }
-            else
-            {
-                Console.WriteLine("Успешная замена!");
-                RepairPart(part);
-            }
-        }
-
-        private void PayFine()
-        {
-            Console.WriteLine($"Вы оплатили штраф в размере {FINE} руб.");
-            ShowBalance();
-        }
-
-        public void CompensateDamage(Part part)
-        {
-            decimal compensation;
-            compensation = (CalculateReplacing(part) / 2) + (FINE * 2);
-            Console.WriteLine($"Размер компенсации: {compensation}");
-            ShowBalance();
-        }
-
-        private void RepairPart(Part part)
-        {
-            if(part.Quantity <= 0) { return; }
-            part.Quantity -= 1;
-            Balance += CalculateReplacing(part);
-            Console.WriteLine($"Замена детали: {part.Name}");
-            ShowBalance();
-            WaitForUser();
-        }
-
-        private decimal CalculateReplacing(Part part)
-        {
-            return part.Price + part.RepairFee;
-        }
-
-        private void CancelOrder()
-        {
-            Balance -= FINE;
-            Console.Clear();
-            Console.WriteLine($"Заказ отменен, вы оплатили штраф в размере {FINE} руб.");
-            ShowBalance();
-            WaitForUser();
-        }
-
-        private void ShowBalance()
-        {
-            Console.WriteLine($"Текущий баланс:{Balance}");
-        }
-
-        public static void WaitForUser()
-        {
-            Console.WriteLine("Нажмите любую клавишу для продолжения...");
-            Console.ReadKey();
-            Console.Clear();
         }
 
         private void ChooseMenu(Part part)
         {
+            Console.Clear();
             Console.WriteLine($"Деталь: {part.Name}. Стоимость ремонта: {part.Price + part.RepairFee}.");
 
             Console.WriteLine("0. Заказать деталь\n1. Все детали\n2. Принять заказ\n3. Отказаться (Штраф)");
@@ -258,5 +85,197 @@ namespace Pr7
                 }
             }
         }
+
+        #region Features
+
+        private void LoseGame()
+        {
+            ShowBalance();
+            Console.WriteLine("Игра окончена, вы в долговой яме.\nПродать душу дьяволу - 1");
+            Console.ReadKey();
+
+
+            throw new Exception("GG");
+        }
+
+        private void PayFine()
+        {
+            Console.WriteLine($"Вы оплатили штраф в размере {FINE} руб.");
+            Balance -= FINE;
+            ShowBalance();
+        }
+
+        private void ShowBalance()
+        {
+            Console.WriteLine($"Текущий баланс:{Balance}");
+        }
+
+        public static void WaitForUser()
+        {
+            Console.WriteLine("Нажмите любую клавишу для продолжения...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        #endregion
+
+        #region Delivery
+
+        private void ShowOrderMenu()
+        {
+            Console.WriteLine("МЕНЮ ЗАКАЗА ДЕТАЛЕЙ");
+
+            ShowAllPartsQuantity();
+            while (true)
+            {
+                Console.WriteLine($"Введите ID детали из списка для заказа (0 - Назад)");
+                int.TryParse(Console.ReadLine(), out int ans);
+
+                if (ans == 0) break;
+                Part part = _parts.FirstOrDefault(p => p.Id == ans);
+                ans = -1;
+
+                if (part != null)
+                {
+                    Console.WriteLine("Введите необходимое количество:");
+                    int.TryParse(Console.ReadLine(), out ans);
+
+                    decimal orderPrice = ans * part.Price;
+                    Console.WriteLine($"Сумма заказа: {orderPrice} руб.");
+                    if (Balance >= orderPrice)
+                    {
+                        Console.WriteLine("Нажмите 1 для подтверждения");
+                        if (Console.ReadKey().Key == ConsoleKey.D1)
+                        {
+                            Balance -= orderPrice;
+                            _orders.Add(new Order(part, ans));
+                            ShowBalance();
+                        }
+                        else ShowOrderMenu();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Недостаточно средств");
+                        ShowBalance();
+                        ShowOrderMenu();
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Неверный ID!");
+                }
+            }
+        }
+
+        public void ManageOrders()
+        {
+            List<Order> ordersToRemove = new();
+            foreach (Order order in _orders)
+            {
+                order.TurnsToDelive --;
+                if(order.TurnsToDelive <= 0) ordersToRemove.Add(order);
+            }
+            foreach(Order order in ordersToRemove)
+            {
+                DeliveOrder(order);
+                _orders.Remove(order);
+            }
+        }
+
+        private void DeliveOrder(Order order)
+        {
+            Console.WriteLine($"!!! Заказ {order.Id} доставлен. !!!");
+            order.Part.Quantity += order.PartQuantity;
+
+            ShowPartQuantity(order.Part);
+        }
+
+        #endregion
+
+        #region ClientOrders
+
+        private void ClaimOrder(Part part)
+        {
+            if (part.Quantity <= 0)
+            {
+                if (_parts.First(q => q.Quantity > 0) != null)
+                {
+                    while (true)
+                    {
+                        part = _parts[random.Next(0, _parts.Count)];
+                        if (part.Quantity > 0) break;
+                    }
+                    RepairPart(part);
+                    CompensateDamage(part);
+                }
+                else
+                {
+                    Console.WriteLine("На складе нет деталей!");
+                    PayFine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Успешная замена!");
+                RepairPart(part);
+            }
+        }
+        private void CancelOrder()
+        {
+            Console.Clear();
+            Console.WriteLine($"Заказ отменен");
+            PayFine();
+            WaitForUser();
+        }
+
+        public void CompensateDamage(Part part)
+        {
+            decimal compensation;
+            compensation = (CalculateReplacing(part) / 2) + (FINE * 2);
+            Console.WriteLine($"Размер компенсации: {compensation}");
+            ShowBalance();
+        }
+
+        #endregion
+
+        #region PartsManagement
+
+        private void RepairPart(Part part)
+        {
+            if (part.Quantity <= 0) { return; }
+            part.Quantity -= 1;
+            Balance += CalculateReplacing(part);
+            Console.WriteLine($"Замена детали: {part.Name}");
+            ShowBalance();
+            WaitForUser();
+        }
+
+        private Part GetRandomPart()
+        {
+            List<Part> parts = Core.Context.Parts.ToList();
+            return parts[random.Next(0, parts.Count)];
+        }
+
+        private void ShowAllPartsQuantity()
+        {
+            int count = 0;
+            foreach (Part part in _parts)
+            {
+                ShowPartQuantity(part);
+            }
+        }
+
+        private void ShowPartQuantity(Part part)
+        {
+            Console.WriteLine($"{part.Id}. {part.Name}: {part.Quantity} шт.\n");
+        }
+
+        private decimal CalculateReplacing(Part part)
+        {
+            return part.Price + part.RepairFee;
+        }
+
+        #endregion
     }
 }

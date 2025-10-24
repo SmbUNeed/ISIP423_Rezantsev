@@ -21,6 +21,13 @@ namespace ISIP423_Rezantsev
             Part = part;
             PartQuantity = quantity;
             TurnsToDelive = 2;
+
+            Console.WriteLine($"Заказ {Id} сформирован!");
+        }
+
+        public void GetInfo()
+        {
+            Console.WriteLine($"{Id}. {Part}: {PartQuantity} шт.\nБудет доставлено через {TurnsToDelive} д.");
         }
     }
 }
