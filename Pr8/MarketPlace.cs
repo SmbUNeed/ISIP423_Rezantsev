@@ -70,7 +70,28 @@ namespace Pr8
 
         private void SignIn()
         {
+            List<Users> users = Core.Context.Users.ToList();
+            while (true) 
+            {
+                Menu.Header("ВХОД");
+            
+                string login = Menu.WriteRead("Логин: ");
+                string password = Menu.WriteRead("Пароль: ");
 
+                if (password == "" || login == "") StartMenu();
+
+                Users user = users.FirstOrDefault(u => u.login == login);
+
+                if (user == null) continue;
+                if (user.password != password) 
+                    Console.WriteLine("Неверный логин или пароль");
+                else
+                {
+                    CurrentUser = user;
+                    Console.WriteLine("Вход успешный!");
+                    break;
+                }
+            }
         }
 
         private void ShowGoods()
