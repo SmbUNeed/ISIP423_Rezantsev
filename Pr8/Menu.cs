@@ -32,6 +32,12 @@ namespace Pr8
             Console.WriteLine(headername);
             Separator();
         }
+
+        public static string WriteRead(string Q)
+        {
+            Console.Write(Q);
+            return Console.ReadLine();
+        }
         
     }
 }
