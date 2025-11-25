@@ -13,10 +13,10 @@ namespace Pr8
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class GMWOGEntities : DbContext
+    public partial class GMWOGEntities1 : DbContext
     {
-        public GMWOGEntities()
-            : base("name=GMWOGEntities")
+        public GMWOGEntities1()
+            : base("name=GMWOGEntities1")
         {
         }
     
@@ -29,6 +29,7 @@ namespace Pr8
         public virtual DbSet<Goods> Goods { get; set; }
         public virtual DbSet<Office> Office { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<Orders_Goods> Orders_Goods { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Users> Users { get; set; }
     }

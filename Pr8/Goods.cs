@@ -18,7 +18,7 @@ namespace Pr8
         public Goods()
         {
             this.Cart_Goods = new HashSet<Cart_Goods>();
-            this.Orders = new HashSet<Orders>();
+            this.Orders_Goods = new HashSet<Orders_Goods>();
         }
     
         public int id { get; set; }
@@ -29,6 +29,6 @@ namespace Pr8
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cart_Goods> Cart_Goods { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Orders> Orders { get; set; }
+        public virtual ICollection<Orders_Goods> Orders_Goods { get; set; }
     }
 }

@@ -8,6 +8,6 @@ namespace Pr8
 {
     internal class Core
     {
-        public static GMWOGEntities Context = new GMWOGEntities();
+        public static GMWOGEntities1 Context = new GMWOGEntities1();
     }
 }

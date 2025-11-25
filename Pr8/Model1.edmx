@@ -39,8 +39,6 @@
           <Property Name="office_id" Type="int" Nullable="false" />
           <Property Name="date" Type="datetime" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "GMWOG.dbo.Orders_Goods" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="Orders_Goods">
           <Key>
             <PropertyRef Name="order_id" />
@@ -48,6 +46,7 @@
           </Key>
           <Property Name="order_id" Type="int" Nullable="false" />
           <Property Name="good_id" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -161,14 +160,9 @@
           <EntitySet Name="Goods" EntityType="Self.Goods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Office" EntityType="Self.Office" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders_Goods" EntityType="Self.Orders_Goods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Orders_Goods" EntityType="Self.Orders_Goods" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Orders_Goods].[order_id] AS [order_id], 
-    [Orders_Goods].[good_id] AS [good_id]
-    FROM [dbo].[Orders_Goods] AS [Orders_Goods]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Cart_Goods_Goods" Association="Self.FK_Cart_Goods_Goods">
             <End Role="Goods" EntitySet="Goods" />
             <End Role="Cart_Goods" EntitySet="Cart_Goods" />
@@ -223,7 +217,7 @@
           <Property Name="price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Cart_Goods" Relationship="Self.FK_Cart_Goods_Goods" FromRole="Goods" ToRole="Cart_Goods" />
-          <NavigationProperty Name="Orders" Relationship="Self.Orders_Goods" FromRole="Goods" ToRole="Orders" />
+          <NavigationProperty Name="Orders_Goods" Relationship="Self.FK_Orders_Goods_Goods" FromRole="Goods" ToRole="Orders_Goods" />
         </EntityType>
         <EntityType Name="Office">
           <Key>
@@ -243,8 +237,19 @@
           <Property Name="office_id" Type="Int32" Nullable="false" />
           <Property Name="date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Office" Relationship="Self.FK_Orders_Office" FromRole="Orders" ToRole="Office" />
+          <NavigationProperty Name="Orders_Goods" Relationship="Self.FK_Orders_Goods_Orders" FromRole="Orders" ToRole="Orders_Goods" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Orders_Users" FromRole="Orders" ToRole="Users" />
-          <NavigationProperty Name="Goods" Relationship="Self.Orders_Goods" FromRole="Orders" ToRole="Goods" />
+        </EntityType>
+        <EntityType Name="Orders_Goods">
+          <Key>
+            <PropertyRef Name="order_id" />
+            <PropertyRef Name="good_id" />
+          </Key>
+          <Property Name="order_id" Type="Int32" Nullable="false" />
+          <Property Name="good_id" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Goods" Relationship="Self.FK_Orders_Goods_Goods" FromRole="Orders_Goods" ToRole="Goods" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Goods_Orders" FromRole="Orders_Goods" ToRole="Orders" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -296,6 +301,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Goods_Goods">
+          <End Role="Goods" Type="Self.Goods" Multiplicity="1" />
+          <End Role="Orders_Goods" Type="Self.Orders_Goods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Goods">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Orders_Goods">
+              <PropertyRef Name="good_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Office">
           <End Role="Office" Type="Self.Office" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
@@ -320,6 +337,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Goods_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="Orders_Goods" Type="Self.Orders_Goods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Orders_Goods">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
@@ -332,15 +361,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Orders_Goods">
-          <End Role="Goods" Type="Self.Goods" Multiplicity="*" />
-          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="GMWOGEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="GMWOGEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cart_Goods" EntityType="Self.Cart_Goods" />
           <EntitySet Name="Goods" EntityType="Self.Goods" />
           <EntitySet Name="Office" EntityType="Self.Office" />
           <EntitySet Name="Orders" EntityType="Self.Orders" />
+          <EntitySet Name="Orders_Goods" EntityType="Self.Orders_Goods" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <AssociationSet Name="FK_Cart_Goods_Goods" Association="Self.FK_Cart_Goods_Goods">
@@ -351,6 +377,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Cart_Goods" EntitySet="Cart_Goods" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Goods_Goods" Association="Self.FK_Orders_Goods_Goods">
+            <End Role="Goods" EntitySet="Goods" />
+            <End Role="Orders_Goods" EntitySet="Orders_Goods" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Office" Association="Self.FK_Orders_Office">
             <End Role="Office" EntitySet="Office" />
             <End Role="Orders" EntitySet="Orders" />
@@ -359,12 +389,12 @@
             <End Role="Office" EntitySet="Office" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Goods_Orders" Association="Self.FK_Orders_Goods_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Orders_Goods" EntitySet="Orders_Goods" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Users" Association="Self.FK_Orders_Users">
             <End Role="Users" EntitySet="Users" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="Orders_Goods" Association="Self.Orders_Goods">
-            <End Role="Goods" EntitySet="Goods" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
         </EntityContainer>
@@ -373,7 +403,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище GMWOGModelContainer" CdmEntityContainer="GMWOGEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище GMWOGModelContainer" CdmEntityContainer="GMWOGEntities1">
           <EntitySetMapping Name="Cart_Goods">
             <EntityTypeMapping TypeName="GMWOGModel.Cart_Goods">
               <MappingFragment StoreEntitySet="Cart_Goods">
@@ -411,6 +441,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Orders_Goods">
+            <EntityTypeMapping TypeName="GMWOGModel.Orders_Goods">
+              <MappingFragment StoreEntitySet="Orders_Goods">
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="good_id" ColumnName="good_id" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="GMWOGModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -436,14 +475,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="Orders_Goods" TypeName="GMWOGModel.Orders_Goods" StoreEntitySet="Orders_Goods">
-            <EndProperty Name="Goods">
-              <ScalarProperty Name="id" ColumnName="good_id" />
-            </EndProperty>
-            <EndProperty Name="Orders">
-              <ScalarProperty Name="id" ColumnName="order_id" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

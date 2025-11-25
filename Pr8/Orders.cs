@@ -17,7 +17,7 @@ namespace Pr8
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Orders()
         {
-            this.Goods = new HashSet<Goods>();
+            this.Orders_Goods = new HashSet<Orders_Goods>();
         }
     
         public int id { get; set; }
@@ -26,8 +26,8 @@ namespace Pr8
         public Nullable<System.DateTime> date { get; set; }
     
         public virtual Office Office { get; set; }
-        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Goods> Goods { get; set; }
+        public virtual ICollection<Orders_Goods> Orders_Goods { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

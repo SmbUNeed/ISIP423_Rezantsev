@@ -36,7 +36,8 @@ namespace Pr8
         public static string WriteRead(string Q)
         {
             Console.Write(Q);
-            return Console.ReadLine();
+            string ans = Console.ReadLine();
+            return ans;
         }
         
     }
