@@ -25,6 +25,8 @@ namespace Pr8
                             SignUp();
                             break;
                         case ConsoleKey.D2:
+
+
                             SignIn();
                             break;
                         case ConsoleKey.D3:
@@ -37,7 +39,7 @@ namespace Pr8
             }
             else
             {
-                Menu.ShowPick("Просмотр товаров", "Корзина", "Выбрать пункт выдачи");
+                Menu.ShowPick("Просмотр товаров", "Корзина", "Выбрать пункт выдачи", "История заказов");
                 while (true)
                 {
                     switch (Console.ReadKey().Key)
@@ -50,6 +52,9 @@ namespace Pr8
                             break;
                         case ConsoleKey.D3:
                             ChooseOffice();
+                            break;
+                        case ConsoleKey.D4:
+                            ShowOrders();
                             break;
                         default:
                             break;
@@ -93,7 +98,7 @@ namespace Pr8
             Console.WriteLine($"Общая стоимость: {totalPrice} руб.");
             Menu.Separator();
 
-            Menu.ShowPick("Заказать все товары из корзины", "Купить отдельный товар", "Очистить корзину", "Вернуться к товарам");
+            Menu.ShowPick("Заказать все товары из корзины", "Купить отдельный товар", "Очистить корзину", "Вернуться к товарам", "История заказов");
 
             while (true)
             {
@@ -111,11 +116,34 @@ namespace Pr8
                     case ConsoleKey.D4:
                         ShowGoods();
                         return;
+                    case ConsoleKey.D5:
+                        ShowOrders();
+                        return;
                     default:
                         break;
                 }
             }
         }
+        
+        private void ShowOrders()
+        {
+            Menu.Header("ИСТОРИЯ ЗАКАЗОВ");
+            List<Orders> orders = Core.Context.Orders.Where(o => o.user_id == CurrentUser.id).ToList();
+            List<Orders_Goods> ogs = Core.Context.Orders_Goods.ToList();
+            
+            foreach(Orders o in orders)
+            {
+                List<Orders_Goods> ordersGoods = ogs.Where(og => og.order_id == o.id).ToList();
+                foreach(Orders_Goods od in ordersGoods)
+                {
+                    Console.WriteLine($"Заказ {o.id} | " +
+                        $"Товар: {Core.Context.Goods.ToList().First(g => g.id == od.good_id).name} | " +
+                        $"{od.quantity} шт.");
+                }
+            }
+            StartMenu();
+        }
+
         private void OrderAllFromCart(List<Cart_Goods> cart)
         {
             if (CurrentUser.Office == null)
@@ -292,7 +320,7 @@ namespace Pr8
                 {
                     CurrentUser = user;
                     Console.WriteLine("Вход успешный!");
-                    ShowGoods();
+                    StartMenu();
                 }
             }
 

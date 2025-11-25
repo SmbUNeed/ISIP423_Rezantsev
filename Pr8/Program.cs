@@ -11,7 +11,10 @@ namespace Pr8
         static void Main(string[] args)
         {
             MarketPlace mp = new MarketPlace();
-            mp.StartMenu();
+            while (true)
+            {
+                mp.StartMenu();
+            }
         }
     }
 }
