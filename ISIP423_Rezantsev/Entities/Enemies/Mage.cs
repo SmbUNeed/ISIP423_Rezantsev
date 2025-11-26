@@ -13,7 +13,7 @@
 
         public override void ApplySpecialEffect(Creature target)
         {
-            if (random.NextDouble() < freezeChance)
+            if (RandomSingleton.random.NextDouble() < freezeChance)
             {
                 Console.WriteLine("Маг замораживает вас! Вы пропустите следующий ход.");
                 // Эффект заморозки будет обработан в классе игры

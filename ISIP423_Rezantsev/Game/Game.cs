@@ -1,4 +1,6 @@
-﻿namespace ISIP423_Rezantsev
+﻿using ISIP423_Rezantsev.Factories;
+
+namespace ISIP423_Rezantsev
 {
     internal class Game
     {
@@ -6,34 +8,11 @@
         private Random random;
         private int turnCount;
 
-        private List<Enemy>? normalEnemies;
-        private List<Enemy>? bosses;
-
         public Game()
         {
             player = new Player();
             random = new Random();
             turnCount = 0;
-
-            InitializeEnemies();
-        }
-
-        private void InitializeEnemies()
-        {
-            normalEnemies = new List<Enemy>
-            {
-                new Goblin(),
-                new Skeleton(),
-                new Mage()
-            };
-
-            bosses = new List<Enemy>
-            {
-                new VVG(),
-                new Kovalsky(),
-                new ArchmageCPP(),
-                new PestovCMM()
-            };
         }
 
         public void StartGame()
@@ -134,21 +113,21 @@
 
             if (turnCount % 10 == 0)
             {
-                enemy = bosses[random.Next(bosses.Count)];
+                enemy = MonsterFactory.CreateRandomBoss();
                 Console.WriteLine($"\nВНИМАНИЕ! Появился босс - {enemy.Name}!");
             }
             else
             {
-                enemy = normalEnemies[random.Next(normalEnemies.Count)];
+                enemy = MonsterFactory.CreateRandomMonster();
                 Console.WriteLine($"\nПоявился враг - {enemy.Name}!");
             }
 
-            enemy.DisplayStats();
             Combat(enemy);
         }
 
         private void Combat(Enemy enemy)
         {
+            enemy.DisplayStats();
             while (player.IsAlive && enemy.IsAlive)
             {
                 Console.WriteLine("\nВаш ход:");

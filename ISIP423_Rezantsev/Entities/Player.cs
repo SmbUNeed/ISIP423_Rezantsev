@@ -60,12 +60,12 @@
 
         public bool TryDodge()
         {
-            return random.NextDouble() < 0.4; // 40% шанс уклонения
+            return RandomSingleton.random.NextDouble() < 0.4; // 40% шанс уклонения
         }
 
         public int CalculateBlock(int incomingDamage)
         {
-            double blockPercentage = 0.7 + (random.NextDouble() * 0.3); // 70-100% защиты
+            double blockPercentage = 0.7 + (RandomSingleton.random.NextDouble() * 0.3); // 70-100% защиты
             int blockedDamage = (int)(Defense * blockPercentage);
             return Math.Min(blockedDamage, incomingDamage);
         }

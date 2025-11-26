@@ -8,8 +8,6 @@
         public int Attack { get; protected set; }
         public int Defense { get; protected set; }
 
-        protected Random random;
-
         public Creature(string name, int maxHP, int attack, int defense)
         {
             Name = name;
@@ -17,11 +15,11 @@
             CurrentHP = maxHP;
             Attack = attack;
             Defense = defense;
-            random = new Random();
         }
 
         public virtual void TakeDamage(int damage)
         {
+            if (this is Slime) damage -= Slime.DamageReduction;
             CurrentHP -= damage;
             if (CurrentHP < 0) CurrentHP = 0;
         }

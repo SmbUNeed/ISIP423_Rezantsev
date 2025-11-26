@@ -9,7 +9,7 @@
         public override int CalculateDamage(Creature target)
         {
             int damage = Attack;
-            if (random.NextDouble() < critChance)
+            if (RandomSingleton.random.NextDouble() < critChance)
             {
                 damage = (int)(damage * 1.5);
                 Console.WriteLine("Гоблин наносит критический удар!");
