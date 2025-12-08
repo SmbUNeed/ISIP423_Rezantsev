@@ -5,13 +5,11 @@ namespace ISIP423_Rezantsev
     internal class Game
     {
         private Player player;
-        private Random random;
         private int turnCount;
 
         public Game()
         {
             player = new Player();
-            random = new Random();
             turnCount = 0;
         }
 
@@ -35,14 +33,8 @@ namespace ISIP423_Rezantsev
                     continue;
                 }
 
-                if (random.Next(2) == 0)
-                {
-                    EncounterChest();
-                }
-                else
-                {
-                    EncounterEnemy();
-                }
+                if (turnCount % 10 != 0 && RandomSingleton.random.Next(2) == 0) EncounterChest();
+                else EncounterEnemy();
 
                 if (!player.IsAlive)
                 {
@@ -58,7 +50,7 @@ namespace ISIP423_Rezantsev
         private void EncounterChest()
         {
             Console.WriteLine("\nВы нашли сундук!");
-            int chestType = random.Next(3); // 0 - зелье, 1 - оружие, 2 - доспехи
+            int chestType = RandomSingleton.random.Next(3); // 0 - зелье, 1 - оружие, 2 - доспехи
 
             switch (chestType)
             {
@@ -194,8 +186,8 @@ namespace ISIP423_Rezantsev
         private Weapon GenerateRandomWeapon()
         {
             string[] weaponNames = { "Стальной меч", "Секира воина", "Кинжал убийцы", "Посох мага", "Лук охотника" };
-            string name = weaponNames[random.Next(weaponNames.Length)];
-            int attack = random.Next(5, 16);
+            string name = weaponNames[RandomSingleton.random.Next(weaponNames.Length)];
+            int attack = RandomSingleton.random.Next(5, 16);
 
             return new Weapon(name, attack);
         }
@@ -203,8 +195,8 @@ namespace ISIP423_Rezantsev
         private Armor GenerateRandomArmor()
         {
             string[] armorNames = { "Кольчуга", "Латные доспехи", "Кожаный доспех", "Мантия мага", "Доспех берсерка" };
-            string name = armorNames[random.Next(armorNames.Length)];
-            int defense = random.Next(3, 11);
+            string name = armorNames[RandomSingleton.random.Next(armorNames.Length)];
+            int defense = RandomSingleton.random.Next(3, 11);
 
             return new Armor(name, defense);
         }

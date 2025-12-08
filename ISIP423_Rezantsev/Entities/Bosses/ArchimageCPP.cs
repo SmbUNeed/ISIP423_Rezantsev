@@ -13,7 +13,7 @@
 
         public override void ApplySpecialEffect(Creature target)
         {
-            if (random.NextDouble() < 0.25) // +10% к базовому шансу мага
+            if (RandomSingleton.random.NextDouble() < 0.25) // +10% к базовому шансу мага
             {
                 Console.WriteLine("Архимаг C++ накладывает мощную заморозку! Вы пропустите следующий ход.");
             }

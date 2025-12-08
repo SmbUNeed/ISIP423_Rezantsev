@@ -15,7 +15,7 @@ namespace ISIP423_Rezantsev.Factories
                 "goblin" => new Goblin(),
                 "skeleton" => new Skeleton(),
                 "mage" => new Mage(),
-                "slime" => new Slime(), // Новый монстр
+                "slime" => new Slime(),
                 "boss_vvg" => new VVG(),
                 "boss_kovalsky" => new Kovalsky(),
                 "boss_archmage" => new ArchmageCPP(),

@@ -14,7 +14,7 @@
         public override int CalculateDamage(Creature target)
         {
             int damage = Attack;
-            if (random.NextDouble() < 0.3) // +10% к базовому шансу гоблина
+            if (RandomSingleton.random.NextDouble() < 0.3) // +10% к базовому шансу гоблина
             {
                 damage = (int)(damage * 1.5);
                 Console.WriteLine("ВВГ наносит сокрушительный критический удар!");

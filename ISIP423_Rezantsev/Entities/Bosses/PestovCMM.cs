@@ -21,7 +21,7 @@
 
         public override void ApplySpecialEffect(Creature target)
         {
-            if (random.NextDouble() < freezeChance)
+            if (RandomSingleton.random.NextDouble() < freezeChance)
             {
                 Console.WriteLine("Пестов С-- использует магию заморозки! Вы пропустите следующий ход.");
             }
